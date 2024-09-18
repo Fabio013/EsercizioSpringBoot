@@ -20,13 +20,13 @@ public class PersonaController {
     public CustomResponse<Persona> getPersonaById(@PathVariable("id") int id) {
         Persona persona = mappaPersone.get(id);
         if (persona == null) {
-            return new CustomResponse(404, HttpStatus.NOT_FOUND);
+            return new CustomResponse<>(404, HttpStatus.NOT_FOUND);
         } else {
             return new CustomResponse<>(200, HttpStatus.OK, persona);
         }
     }
 
-    @GetMapping("persone")
+    @GetMapping("/persone/")
     public List<Persona> getPersonaByNome(@RequestParam("nome") String nome) {
 
         return mappaPersone.entrySet().stream().filter(i -> i.getValue().getNome().equals(nome)).map(map -> map.getValue()).toList();
@@ -36,10 +36,10 @@ public class PersonaController {
     public CustomResponse<?> addPerson(@RequestBody Persona p, @PathVariable ("id") int id){
 
         if(mappaPersone.containsKey(id)){
-          return new CustomResponse(409, HttpStatus.CONFLICT, "La persona già esiste!");
+          return new CustomResponse<>(409, HttpStatus.CONFLICT, "La persona già esiste!");
        } else{
            mappaPersone.put(id, p);
-           return new CustomResponse<>(200, HttpStatus.OK,p);
+           return new CustomResponse<>(200, HttpStatus.OK, p);
        }
     }
 
